@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>得標商品結帳</title>
+<head th:insert="~{/frontend/fronthead}"></head>
+<style type="text/css">
+table{
+font-weight: bold;
+}
+td{
+width: 120px;
+}
+#showmain{
+display: flex;
+}
+#checkout{
+font-weight: bold;
+color: black;
+}
+
+.addr-county {
+color:#7d879c;
+background-color:#f6f9fc;
+border: 1px solid gray;
+width: 100px;
+height: 30px;
+border-radius: 3px;
+margin-right: 8px;
+margin-bottom: 5px;
+}
+.addr-district {
+color:#7d879c;
+background-color:#f6f9fc;
+border: 1px solid gray;
+width: 100px;
+height: 30px;
+border-radius: 3px;
+margin-right: 8px;
+}
+</style>
+</head>
+<body>
+<head th:insert="~{/frontend/frontbody}"></head>
+<!-- End Profile Menu -->
+<!-- Content 主要內容區 要修改的部分都塞在這個裡面 -->
+<!-- 內容直接寫在<div class="table-responsive fs-md mb-4">裡面 -->
+<div class="col-lg-9 col-xxl-9">
+    <div class="table-responsive fs-md mb-4">
+
+		<div id="bid-content">
+			
+			<div id="table-1">
+				<div>
+			 		<h3>得標商品結帳</h3>
+				</div>
+			</div>
+			
+			<div id="showmain">
+				<div id="showmainLeft">
+					<table class="showPanel" style="table-layout: fixed; color: black;line-height: 30px; font-size: 1rem;">
+						<tr>
+							<td>商品資訊</td>
+						</tr>
+						<tr>
+							<td>競標商品編號：</td>
+							<td th:text="${bidProductVO.bidProductNo}"></td>
+						</tr>
+						<tr>
+							<td>商品名稱：</td>
+							<td th:text="${bidProductVO.bidName}"></td>
+						</tr>
+						<tr>
+							<td>得標價格：</td>
+							<td th:text="'$ ' + ${bidProductVO.bidWinnerPrice}"></td>
+						</tr>
+						<tr>
+							<td>起標時間：</td>
+						<td th:text="${#dates.format(bidProductVO.bidLaunchedTime,'yyyy-MM-dd HH:mm:ss')}"></td>
+						</tr>
+						<tr>
+							<td>截標時間：</td>
+						<td th:text="${#dates.format(bidProductVO.bidSoldTime,'yyyy-MM-dd HH:mm:ss')}"></td>
+						</tr>
+					</table>
+				</div>
+	
+				<div id="showmainRight"style="margin-left: auto; display: flex;">
+					<div th:each="bidPicVO : ${bidPicVOs}">
+						<img th:src="@{/bid/bidPicGetOneByProdPicNo?(bidProdPicNo=${bidPicVO.bidProdPicNo})}" style="width: 160px">
+					</div>
+				</div>
+			</div>
+			
+			<div id="checkout">
+				<form method="post" th:action="@{/bid/bidProductCheckout}" id="qqq">
+					<div class="mb-3">
+						<label for="receiverName"><span class="info">收件人姓名</span></label>
+						<input type="text" class="form-control" id="receiverName" name="receiverName"
+								placeholder="" th:value="${memVO.memName}" required>
+					</div>
+					<div id="twzipcode">
+					</div>
+					<div class="mb-3">
+						<label for="receiverAddressDetail"><span class="info">收件人住址</span></label>
+						<input type="text" class="form-control" id="receiverName" name="receiverAddressDetail"
+								placeholder="" th:value="${memVO.memAdd}" required>
+					</div>
+					
+					<div class="mb-3">
+						<label for="receiverPhone"><span class="info">收件人電話</span></label>
+						<input class="form-control" type="text" id="receiverPhone" name="receiverPhone"
+								placeholder="" th:value="${memVO.memMobile}" required>
+					</div>
+					<div class="mb-3">
+						<label for="creditcardNum"><span class="info">信用卡號碼</span></label>
+						<input pattern="[0-9]{13,16}" class="form-control" type="text" id="creditcardNum" name="creditcardNum"
+							placeholder="" th:value="${memVO.creditcardNo}" required>
+					</div>
+					<input type="hidden" name="bidProductNo" th:value="${bidProductVO.bidProductNo}">
+	
+					<button class="btn btn-primary btn-lg btn-block" id="btnConfirm" type="button">確認結帳</button>
+					
+				</form>
+			</div>
+		</div>
+                        </div>
+					</div>
+                    <!-- End Content -->
+               	</div>
+            </div>
+        </div>
+        <!--Table -->
+    </main>
+    <!-- End Main -->
+<head th:insert="~{/frontend/frontfoot}"></head>
+
+<script th:src="@{/frontend/mainCss/assets/js/jquery-3.5.1.min.js}"></script>
+<script th:src="@{/frontend/bid/js/jquery.twzipcode.min.js}"></script>
+<script src="https://cdn.bootcdn.net/ajax/libs/sweetalert/2.1.2/sweetalert.min.js"></script>
+<script type="text/javascript"></script>
+    
+        <script type="text/javascript">
+    
+    $("#btnConfirm").click(function(){
+        swal({
+            title: "信用卡授權中",
+            text: "正在聯絡信用卡公司 請稍候", 
+            icon: "info",
+            timer: 2000
+        })
+        .then(() => {
+        	swal("刷卡成功，感謝參與競標！", {
+              icon: "success",
+              timer: 2000
+            })
+        })
+        .then(() => {
+            setTimeout(checkout, 1000);
+         })
+	    function checkout() {
+	    	document.querySelector("#qqq").submit();
+		}
+    });
+    
+    $('#twzipcode').twzipcode({
+    	'countyName': 'receiverAddressCity',
+    	'districtName': 'receiverAddressDist',
+        'countySel': '[[${memVO.memCity}]]',
+        'districtSel': '[[${memVO.memDist}]]',
+        'css': [
+            'addr-county', //縣市
+            'addr-district',  // 鄉鎮市區
+        ]
+    });
+    
+    $('select[name="receiverAddressCity"]')[0].setAttribute("required","true");
+    </script>
+</body>
+</html>

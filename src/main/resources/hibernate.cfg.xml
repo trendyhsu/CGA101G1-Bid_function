@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-configuration PUBLIC "-//Hibernate/Hibernate Configuration DTD 3.0//EN"
+                                         "http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
+<hibernate-configuration>
+	<session-factory>
+		<!-- JDBC 連線 -->
+		<!-- <property name="hibernate.connection.driver_class">com.mysql.cj.jdbc.Driver</property> -->
+		<!-- <property name="hibernate.connection.url">jdbc:mysql://localhost:3306/JAVA_FRAMEWORK</property> -->
+		<!-- <property name="hibernate.connection.username">tibame</property> -->
+		<!-- <property name="hibernate.connection.password">tibame</property> -->
+
+		<!-- JNDI Hikari 連線池 -->
+		<property name="hibernate.connection.driver_class">com.mysql.cj.jdbc.Driver</property>
+		<property name="hibernate.connection.url">jdbc:mysql://localhost:3306/cga101g1</property>
+		<property name="hibernate.connection.username">tibame</property>
+		<property name="hibernate.connection.password">tibame</property>
+		<property name="hibernate.connection.provider_class">
+		com.zaxxer.hikari.hibernate.HikariConnectionProvider
+		</property>
+		<property name="hibernate.hikari.minimumIdle">5</property>
+		<property name="hibernate.hikari.maximumPoolSize">10</property>
+		<property name="hibernate.hikari.idleTimeout">30000</property>
+		<!-- SQL 方言設定 -->
+		<property name="hibernate.dialect">org.hibernate.dialect.MySQLDialect</property>
+		<!-- 顯示實際操作資料庫的SQL -->
+		<property name="hibernate.show_sql">true</property>
+		<property name="hibernate.format_sql">true</property>
+
+		<property name="hibernate.current_session_context_class">thread</property>
+		<!-- mapping設定 -->
+		<mapping class="com.bidapplylist.model.BidApplyListVO" />
+
+	</session-factory>
+</hibernate-configuration>

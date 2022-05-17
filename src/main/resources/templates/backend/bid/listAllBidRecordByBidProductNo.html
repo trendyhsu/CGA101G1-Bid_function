@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+<meta charset="UTF-8">
+<title>單一競標商品出價紀錄</title>
+<head th:insert="~{/backend/head}"></head>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC&display=swap" rel="stylesheet">
+<style type="text/css">
+
+td{
+	border-bottom-style:solid;
+	font-family: 'Noto Sans TC', sans-serif;
+}
+
+h3{
+font-weight: bold;
+color: #547492;
+margin-top: 40px;
+}
+.changeBtn{
+border-radius: 5px;
+background-color: #547492;
+color: white;
+width: 20px;
+height: 20px;
+padding: 5px 15px;
+}
+.page{
+margin-top: 10px;
+}
+</style>
+</head>
+<body>
+<head th:insert="~{/backend/body}"></head>
+<!--main content start-->
+<section id="main-content">
+	<section class="wrapper">
+		<div id="bid-content">
+			<div id="table-1">
+				<div>
+			 		<h3>單一競標商品競標紀錄</h3>
+				</div>
+			</div>	
+<div align="center">
+	<div>
+  		<b><font color=red>第<label id="currentPage">1</label>/<label id="pageNumber"></label>頁</font></b>
+	</div>
+					<table class="showPanel table table-striped" style="table-layout: fixed; color: black;">
+					<thead>
+						<tr align='center' valign="middle" style="background-color: rgb(179,205,204);">
+							<td>競標商品編號</td>
+							<td>出價編號</td>
+							<td>出價會員</td>
+							<td>出價金額</td>
+							<td>出價時間</td>
+						</tr>
+					</thead>
+				<div th:if="${bidRecordVOs.size == 0}">
+					<tr>
+						<td colspan="5" align='center' valign="middle">
+						目前尚無資料!
+						</td>
+					</tr>
+				</div>
+				<th:block th:each="bidRecordVO : ${bidRecordVOs}">
+					<tr align='center' valign="middle">
+						<td th:text="${bidRecordVO.bidProductNo}"></td>
+						<td th:text="${bidRecordVO.bidRecordNo}"></td>
+						<td th:text="${bidRecordVO.memVO.memName}"></td>
+						<td th:text="${bidRecordVO.bidPrice}"></td>
+						<td th:text="${#dates.format(bidRecordVO.bidTime,'yyyy-MM-dd HH:mm:ss')}"></td>
+					</tr>
+				</th:block>
+			</table>
+		<div style="text-align: center; margin: 40px;">
+			<a th:href="@{/bid/listAllBidProduct}" style="font-size: 1.5rem ;font-weight: bold;">回競標商品列表</a>
+		</div>
+		</div>
+	</div>
+	</section>
+
+	<!--main content end-->
+
+</section>
+
+<head th:insert="~{/backend/footer}"></head>
+
+
+<script type="text/javascript">
+        //分頁顯示
+        $(function () {
+            var $table = $("table");
+            var currentPage = 0; //當前頁默認值為0  
+            var pageSize = 10; //每一頁顯示的數目  
+            $table.bind('paging', function () {
+                $table.find('tbody tr').hide().slice(currentPage * pageSize, (currentPage + 1) * pageSize).show();
+            });
+            var sumRows = $table.find('tbody tr').length;
+            var sumPages = Math.ceil(sumRows / pageSize); //總頁數  
+            document.getElementById("pageNumber").innerHTML = sumPages; //用於第114行
+            
+            var $pager = $('<div class="page" align="center"></div>');  //新建div，放入a標簽,顯示底部分頁碼  
+            for (var pageIndex = 0; pageIndex < sumPages; pageIndex++) {
+                $('<a href="#" id="pageStyle" onclick="changCss(this)"><span>' + (pageIndex + 1) + '</span></a>').bind("click", { "newPage": pageIndex }, function (event) {
+                    currentPage = event.data["newPage"];
+                    document.getElementById("currentPage").innerHTML = currentPage+1; //用於第114行
+                    $table.trigger("paging");
+                    //觸發分頁函數  
+                }).appendTo($pager);
+                $pager.append(" ");
+            }
+            $pager.insertAfter($table);
+            $table.trigger("paging");
+
+            //默認第一頁的a標簽效果  
+            var $pagess = $('#pageStyle');
+            $pagess[0].classList.add("changeBtn");
+        });
+
+        //a鏈接點擊變色，再點其他回復原色  
+        function changCss(obj) {
+            var arr = document.getElementsByTagName("a");
+            for (var i = 0; i < arr.length; i++) {
+                if (obj == arr[i]) {       //當前頁樣式  
+                    obj.classList.add("changeBtn");
+                }
+                else {
+                    arr[i].classList.remove("changeBtn");
+                }
+            }
+        }      
+    </script>
+</body>
+</html>

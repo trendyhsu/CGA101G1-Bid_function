@@ -1,0 +1,151 @@
+
+	<section id="container">
+		<!-- **********************************************************************************************************************************************************
+      TOP BAR CONTENT & NOTIFICATIONS
+      *********************************************************************************************************************************************************** -->
+		<!--header start-->
+		<header class="header black-bg">
+			<div class="sidebar-toggle-box">
+				<div class="fa fa-bars tooltips" data-placement="right"
+					data-original-title="Toggle Navigation"></div>
+			</div>
+			<!--logo start-->
+			<a href="/backend/index.jsp" class="logo"><b>POP.Game</b></a>
+			<!--logo end-->
+			<!--login/out start-->
+			<div class="top-menu">
+                <ul class="nav pull-right top-menu" >
+	                    <li th:if="${managerVO?.managerNo != null}">
+	                    <a class="logout" href="<%=request.getContextPath()%>/manager/managerLogout">登出</a>
+	                    </li>
+						<li th:if="${managerVO?.managerNo == null}">
+						<a class="logout" href="<%=request.getContextPath()%>/backend/managerlogin/managerlogin.jsp">登入 / 註冊</a>
+						</li>
+                </ul>
+            </div>
+			<!--login/out end-->
+		</header>
+		<!--header end-->
+
+		<!-- **********************************************************************************************************************************************************
+      MAIN SIDEBAR MENU
+      *********************************************************************************************************************************************************** -->
+		<!--sidebar start-->
+		<aside>
+			<div id="sidebar" class="nav-collapse ">
+				<!-- sidebar menu start-->
+				<ul class="sidebar-menu" id="nav-accordion">
+
+					<p class="centered">
+							<a th:if="${managerVO?.managerNo == null}" th:href="@{/backend/index.jsp}">
+							<img th:src="@{/backend/assets/img/logo.png}" class="img-circle" width="60">
+							</a>
+							<a th:if="${managerVO?.managerNo != null}" th:href="@{/backend/index.jsp}">
+							<img th:src="@{/manager/managerPic?(managerNo=${managerVO.managerNo})}" class="img-circle" width="60">
+							</a>
+					</p>
+					<h5 class="centered" th:text="${managerVO?.managerName}"></h5>
+
+					<li class="mt"><a class="active"
+						href="/backend/index.jsp"> <i class="fa-solid fa-house-chimney"></i> <span>首頁</span>
+					</a></li>
+
+					<li class="sub-menu"><a href="javascript:void(0)" onclick="">
+							<i class="fa-solid fa-user-astronaut"></i> <span>使用者管理</span>
+					</a>
+						<ul class="sub">
+							<li><a href="/backend/manager/getAllManager.jsp">管理員資料管理</a></li>
+							<li><a href="/backend/managerauth/getAllManagerAuth.jsp">管理員權限管理</a></li>
+						</ul></li>
+
+					<li class="sub-menu"><a href="javascript:;"> 
+					<i class="fa-solid fa-tag"></i> <span>主要商城後臺系統</span>
+					</a>
+						<ul class="sub">
+							<li><a href="/backend/product/productAdd.jsp">新增商品</a></li>
+							<li><a href="/backend/product/productMod.jsp">修改商品</a></li>
+							<li><a href="/backend/product/order.jsp">訂單管理</a></li>
+						</ul></li>
+
+					<li class="sub-menu"><a href="javascript:;"> 
+					<i class="fa-solid fa-gavel"></i> <span>競標管理系統</span>
+					</a>
+						<ul class="sub">
+							<li><a th:href="@{/bidapplylist/getAll}">二手遊戲驗收管理</a></li>
+							<li><a th:href="@{/bid/listAllBidProduct}">查看競標商品</a></li>
+							<li><a th:href="@{/bid/listAllBidOrder}">競標訂單管理</a></li>
+						</ul></li>
+
+					<li class="sub-menu"><a href="javascript:;"> <i
+							class="fa fa-desktop"></i> <span>前台網站管理系統</span>
+					</a>
+						<ul class="sub">
+							<li><a href="/backend/mem/listAllMem.jsp">會員資料管理</a></li>
+							<li><a href="/backend/forum/selectReportHome.jsp">討論區檢舉管理</a></li>
+						</ul></li>
+
+					<li class="sub-menu"><a href="javascript:;"> <i
+							class="fa-solid fa-chalkboard-user"></i> <span>討論區管理系統</span>
+					</a>
+						<ul class="sub">
+							<li><a href="/backend/forum/listAllForum.jsp">討論區編輯</a></li>
+							<li><a href="/backend/forum/listAllForumMasterPost.jsp">發表管理員文章</a></li>
+						</ul></li>
+
+					<li class="sub-menu"><a href="javascript:;"> <i
+							class="fa fa-solid fa-robot"></i> <span>FQ管理系統</span>
+					</a>
+						<ul class="sub">
+							<li><a href="/backend/servicechatroom/ServiceChatroom.jsp">真人文字客服</a></li>
+							<li><a href="/backend/fq/KeyWord-final.jsp">關鍵字設定</a></li>
+						</ul></li>
+
+					<li class="sub-menu"><a href="javascript:;"> <i
+							class="fa fa-cogs"></i> <span>遊戲分類管理</span>
+					</a>
+						<ul class="sub">
+							<li><a href="/backend/gameplatformtype/GetAllGamePlatformType.jsp">遊戲平台管理</a></li>
+							<li><a href="/backend/gametype/GetAllGameType.jsp">遊戲種類管理</a></li>
+							<li><a href="/backend/gamecompany/GetAllGameCompany.jsp">遊戲公司管理</a></li>
+						</ul></li>
+
+					<li class="sub-menu"><a href="javascript:;"> <i
+							class="fa-solid fa-newspaper"></i> <span>行銷管理</span>
+					</a>
+						<ul class="sub">
+							<li><a href="/backend/news/GameNews-final.jsp">編輯新聞</a></li>
+							<li><a href="/backend/couponType/listAllCouponType.jsp">優惠券管理</a></li>
+							<li><a href="/backend/couponType/addCouponType.jsp">新增優惠券</a></li>
+							<li><a href="/backend/memCoupon/showMemCoupon.jsp">已發放優惠券管理</a></li>
+							<li><a href="/backend/memCoupon/sendMemCoupon.jsp">發放優惠券</a></li>
+						</ul></li>
+
+				</ul>
+				<!-- sidebar menu end-->
+			</div>
+		</aside>
+		<!--sidebar end-->
+
+		<!-- **********************************************************************************************************************************************************
+      MAIN CONTENT 內容寫在這裡面
+      *********************************************************************************************************************************************************** -->
+		<!--main content start-->
+		<!-- 		<section id="main-content"> -->
+		<!-- 			<section class="wrapper"> -->
+
+		<!-- 				<div class="row"> -->
+
+		<!-- 					<div class="col-lg-9 main-chart"> -->
+
+		<!-- <!-- 						內容寫在這裡面 -->
+
+		<!-- 					</div> -->
+		<!-- <!-- 					/col-lg-9 END SECTION MIDDLE -->
+
+		<!-- 				</div> -->
+		<!-- 			</section> -->
+		<!-- 		</section> -->
+
+		<!--main content end-->
+
+<!-- 	</section> -->

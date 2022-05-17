@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>競標商品申請</title>
+<head th:insert="~{/frontend/fronthead}"></head>
+<link rel="stylesheet" type="text/css" th:href="@{frontend/mainCss/datetimepicker/jquery.datetimepicker.css}" />
+<style>
+table {
+/* 	background-color: white; */
+	margin-bottom: 5px;
+	font-size: 13px;
+	color:black;
+}
+
+table, th, td {
+	border-bottom: 1px solid #CCC;
+	font-weight:bold;
+}
+
+th, td {
+	padding: 5px;
+	text-align: left;
+}
+.uploadedImg{
+padding: 10px
+}
+
+h3{
+font-weight: bold;
+color: #547492;
+}
+input, select{
+	border-style:solid;
+	border-color: gray;
+	border-radius: 5px;
+	width: 170px
+}
+textarea {
+	border-style:solid;
+	border-color: gray;
+	border-radius: 5px;
+}
+
+</style>
+</head>
+<body>
+<head th:insert="~{/frontend/frontbody}"></head>
+<!-- End Profile Menu -->
+<!-- Content 主要內容區 要修改的部分都塞在這個裡面 -->
+<!-- 內容直接寫在<div class="table-responsive fs-md mb-4">裡面 -->
+   <div class="col-lg-9 col-xxl-9">
+	   <div class="table-responsive fs-md mb-4">
+
+		<div id="bid-content">
+			<table id="table-1">
+				<tr>
+					<td>
+				 		<h3>競標商品申請</h3>
+					</td>
+				</tr>
+			</table>
+			
+<!-- 		主要修改資訊區 -->
+
+		<form method="post" th:action="@{/bidapplylist/bidApplyListInsert}" name="form1" th:object="${bidApplyListVO}">
+			<table>
+				<tr>
+					<td>商品名稱</td>
+					<td>
+					<input type="text" th:field="*{bidName}"/>
+					</td>
+					<td th:if="${#fields.hasErrors('bidName')}" th:errors="*{bidName}" class="error" id="bidName.errors"></td>
+				</tr>
+				<tr>
+					<td>商品敘述</td>
+					<td><textArea th:field="*{bidProdDescription}" rows="10" cols="22" 
+					style="resize:none"></textArea>
+					</td>
+					<td th:if="${#fields.hasErrors('bidProdDescription')}" th:errors="*{bidProdDescription}" class="error" id="bidProdDescription.errors"></td>
+				</tr>
+				<tr>
+					<td>遊戲公司</td>
+					<td>
+						<select size="1" th:field="*{gameCompanyNo}" style="width: 170px">
+          					<option th:each="gameCompanyVO : ${gameCompanyVOs}" th:value="${gameCompanyVO.gameCompanyNo}" th:text="${gameCompanyVO.gameCompanyName}" />
+	       				</select>
+					</td>
+					<td th:if="${#fields.hasErrors('gameCompanyNo')}" th:errors="*{gameCompanyNo}" class="error" id="gameCompanyNo.errors"></td>
+				</tr>
+				<tr>
+					<td>遊戲類型</td>
+					<td>
+				       <select size="1" th:field="*{gameTypeNo}" style="width: 170px">
+          					<option th:each="gameTypeVO : ${gameTypeVOs}" th:value="${gameTypeVO.gameTypeNo}" th:text="${gameTypeVO.gameTypeName}" />
+	       				</select>
+					</td>
+					<td th:if="${#fields.hasErrors('gameTypeNo')}" th:errors="*{gameTypeNo}" class="error" id="gameTypeNo.errors"></td>
+				</tr>
+				<tr>
+					<td>遊戲平台</td>
+					<td>
+				       <select size="1" th:field="*{gamePlatformNo}" style="width: 170px">
+          					<option th:each="gamePlatformTypeVO : ${gamePlatformTypeVOs}" th:value="${gamePlatformTypeVO.gamePlatformNo}" th:text="${gamePlatformTypeVO.gamePlatformName}" />
+	       				</select>
+					</td>
+					<td th:if="${#fields.hasErrors('gamePlatformNo')}" th:errors="*{gamePlatformNo}" class="error" id="gamePlatformNo.errors"></td>
+				</tr>
+				<tr>
+					<td>起標價</td>
+					<td><input type="number" th:field="*{initialPrice}" size="45" min="0" />
+					</td>
+					<td th:if="${#fields.hasErrors('initialPrice')}" th:errors="*{initialPrice}" class="error" id="initialPrice.errors"></td>
+				</tr>
+				<tr>
+					<td>最低增額</td>
+					<td><input type="number" th:field="*{bidPriceIncrement}" size="45" min="0" />
+					</td>
+					<td th:if="${#fields.hasErrors('bidPriceIncrement')}" th:errors="*{bidPriceIncrement}" class="error" id="bidPriceIncrement.errors"></td>
+				</tr>
+				<tr>
+					<td>UPC編號</td>
+					<td><input type="text" th:field="*{upcNum}">
+					</td>
+					<td th:if="${#fields.hasErrors('upcNum')}" th:errors="*{upcNum}" class="error" id="upcNum.errors"></td>
+				</tr>
+				<tr>
+					<td>起標時間</td>
+					<td><input id="bidLaunchedTime" type="text" th:field="*{bidLaunchedTime}">
+					</td>
+					<td th:if="${#fields.hasErrors('bidLaunchedTime')}" th:errors="*{bidLaunchedTime}" class="error" id="bidLaunchedTime.errors"></td>
+				</tr>
+				<tr>
+					<td>截標時間</td>
+					<td><input id="bidSoldTime" type="text" th:field="*{bidSoldTime}">
+					</td>
+					<td th:if="${#fields.hasErrors('bidSoldTime')}" th:errors="*{bidSoldTime}" class="error" id="bidSoldTime.errors"></td>
+				</tr>
+				<tr>
+					<td>
+						<input type="hidden" th:field="*{bidApplyListNo}"/>
+						<input type="submit" value="新增">
+						<input type="reset" value="重設">
+					</td>
+				</tr>
+			</table>
+		</form>
+	</div>
+
+	</div>
+</div>
+                    <!-- End Content -->
+               	</div>
+            </div>
+        </div>
+        <!--Table -->
+    </main>
+    <!-- End Main -->
+
+<head th:insert="~{/frontend/frontfoot}"></head>
+
+<script th:src="@{/frontend/mainCss/datetimepicker/jquery.js}"></script>
+<script th:src="@{/frontend/mainCss/datetimepicker/jquery.datetimepicker.full.js}"></script>
+<script	src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
+
+	<script type="text/javascript">
+		$.datetimepicker.setLocale("zh");
+		$("#bidLaunchedTime").datetimepicker({
+			theme : '', // theme: 'dark', 
+			timepicker : true, // timepicker:true,
+			step : 1, //step: 60 設定時間時分的間隔
+			format : 'Y-m-d H:i:s', //format:'Y-m-d H:i:s',
+			value : new Date() // value: new Date(), 會帶入現在時間
+		});
+		
+		$("#bidSoldTime").datetimepicker({
+			theme : '', // theme: 'dark', 
+			timepicker : true, // timepicker:true,
+			step : 1, //step: 60 設定時間時分的間隔
+			format : 'Y-m-d H:i:s', //format:'Y-m-d H:i:s',
+			value : new Date()
+		});
+
+	</script>
+</body>
+</html>
